@@ -19,6 +19,8 @@ Used in conjuction with `Extendable`.
 `Prototype`:
 
 ```php
+<?php
+
 use Prototype\Prototype as Proto;
 
 // Simply extend with Prototype.
