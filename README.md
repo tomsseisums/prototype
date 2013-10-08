@@ -1,5 +1,7 @@
 ## Usage
-``` php
+```php
+<?php
+
 error_reporting(-1);
 ini_set('display_errors', true);
 ini_set('html_errors', false);
