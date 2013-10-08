@@ -1,63 +1,49 @@
-## Usage
+### Prototype
+Prototype is a runtime extension library built for plugin development.  
+Initially inspired by JavaScript's `.prototype`, but extended to allow for
+instance extensions.
+
+### Requirements
+- PHP5.4
+
+### Contents
+You have three abstract classes at your disposal:
+- `Prototype` &mdash; the main runtime extension component, used to extend
+classes with public properties and methods.
+- `Extendable` (extends `Prototype`) &mdash; the main instance level runtime extension component, used
+to register class based extensions that will be auto-applied to every instance.
+- `Extension` &mdash; not exactly for extensions, acts as an interface.
+Used in conjuction with `Extendable`.
+
+### Usage
+`Prototype`:  
 ```php
-<?php
+use Prototype\Prototype as Proto;
 
-error_reporting(-1);
-ini_set('display_errors', true);
-ini_set('html_errors', false);
-
-header('Content-Type: text/plain; charset=utf-8');
-
-require 'src/Prototype/Prototype.php';
-
-
-class Dummy extends Prototype\Prototype
+// Simply extend with Prototype.
+class A extends Proto
 {}
 
-class Woody extends Prototype\Prototype
+// Create instance.
+$a = new A;
+
+// Add property.
+$a->dummyProperty = 'x';
+
+// Add method.
+$a->dummyMethod = function()
 {
-    protected $dateTime;
-    protected $dateFormat;
+    // Yes, $this actually refers to the classes instance.
+    echo $this->dummyProperty;
 
-    public function __construct($dateFormat = DATE_ATOM)
-    {
-        $this->dateTime = new DateTime;
-        $this->dateFormat = $dateFormat;
-    }
-
-    public function notice($message)
-    {
-        $this->log($message);
-    }
-
-    public function warning($message)
-    {
-        $this->log('Warning: ' . $message);
-    }
-
-    public function fatal($message)
-    {
-        $this->log('FATAL: ' . $message);
-    }
-
-    protected function log($message)
-    {
-        echo '['. $this->dateTime->format($this->dateFormat) .'] ' . $message . PHP_EOL;
-    }
-}
-
-$dummy = new Dummy;
-$dummy->logger = new Woody('d.m.Y H:i:s');
-$dummy->logger->notice('Started Woody');
-
-// Register an alias.
-$dummy->logger->info = function()
-{
-    call_user_func_array(array($this, 'notice'), func_get_args());
+    // Chaining is also possible.
+    return $this;
 };
 
-$dummy->logger->info('Registered alias `info` for `notice`.');
-
-$dummy->logger->warning('Shutting down...');
-$dummy->logger->fatal('Halted');
+// Test it.
+$a->dummyMethod()->dummyMethod(); // xx
 ```
+
+### TODO
+- Finish Usage:
+ - `Extendable` & `Extension`.
