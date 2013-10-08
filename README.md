@@ -16,7 +16,8 @@ to register class based extensions that will be auto-applied to every instance.
 Used in conjuction with `Extendable`.
 
 ### Usage
-`Prototype`:  
+`Prototype`:
+
 ```php
 use Prototype\Prototype as Proto;
 
